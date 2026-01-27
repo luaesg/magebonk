@@ -23,9 +23,9 @@ export class InputManager {
   }
 
   setupEventListeners() {
-    document.addEventListener('keydown', (e) => this.handleKeyDown(e));
-    document.addEventListener('keyup', (e) => this.handleKeyUp(e));
-    document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+    document.addEventListener('keydown', (e) => this.handleKeyDown(e), false);
+    document.addEventListener('keyup', (e) => this.handleKeyUp(e), false);
+    document.addEventListener('mousemove', (e) => this.handleMouseMove(e), false);
 
     document.addEventListener('click', () => {
       if (!this.isPointerLocked) {
@@ -71,19 +71,15 @@ export class InputManager {
     const key = e.key.toLowerCase();
 
     if (key === 'w') {
-      e.preventDefault();
       this.keys.w = true;
     }
     if (key === 'a') {
-      e.preventDefault();
       this.keys.a = true;
     }
     if (key === 's') {
-      e.preventDefault();
       this.keys.s = true;
     }
     if (key === 'd') {
-      e.preventDefault();
       this.keys.d = true;
     }
     if (e.key === 'ArrowUp') {
@@ -124,7 +120,13 @@ export class InputManager {
 
   handleMouseMove(e) {
     if (!this.isPointerLocked) return;
-    this.onMouseMove?.(e.movementX, e.movementY);
+
+    const movementX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+    const movementY = e.movementY || e.mozMovementY || e.webkitMovementY || 0;
+
+    if (movementX !== 0 || movementY !== 0) {
+      this.onMouseMove?.(movementX, movementY);
+    }
   }
 
   isMovingForward() {
