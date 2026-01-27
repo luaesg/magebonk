@@ -6,6 +6,7 @@ import { AudioManager } from './AudioManager.js';
 import { FPSCounter } from './FPSCounter.js';
 import { SpeechRecognitionManager } from './SpeechRecognitionManager.js';
 import { SpellManager } from './SpellManager.js';
+import { EnemyManager } from './EnemyManager.js';
 
 export class Game {
   constructor() {
@@ -16,6 +17,7 @@ export class Game {
     this.fpsCounter = new FPSCounter();
     this.speechRecognitionManager = new SpeechRecognitionManager();
     this.spellManager = new SpellManager(this.gameScene, this.player, this.audioManager);
+    this.enemyManager = new EnemyManager(this.gameScene, this.player, this.audioManager);
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -24,6 +26,7 @@ export class Game {
 
     this.isPaused = false;
     this.animationFrameId = null;
+    this.lastFrameTime = performance.now();
 
     this.settingsMenu = document.getElementById('settings-container');
     if (!this.settingsMenu) {
@@ -53,9 +56,10 @@ export class Game {
             this.setupCollisions();
             this.setupPlayerAudio();
             this.setupSpells();
-            
+            this.setupEnemies();
+
             this.speechRecognitionManager.start();
-        
+
             this.animate();
           }    
     togglePause() {    this.isPaused = !this.isPaused;
@@ -131,7 +135,7 @@ export class Game {
       this.speechRecognitionManager.onCommand = (command, intensity = 0.5) => {
           const lowerCmd = command.toLowerCase();
           console.log(`Comando recebido: ${lowerCmd}, Intensidade: ${intensity.toFixed(2)}`);
-          
+
           if (lowerCmd.includes('bola de fogo') || lowerCmd.includes('fireball') || lowerCmd.includes('fogo')) {
               this.spellManager.castSpell('fireball', intensity);
           } else if (lowerCmd.includes('gelo') || lowerCmd.includes('ice')) {
@@ -140,16 +144,26 @@ export class Game {
       };
   }
 
+  setupEnemies() {
+    this.enemyManager.setParticleSystem(this.spellManager.particleSystem);
+    this.spellManager.setEnemyManager(this.enemyManager);
+
+    this.enemyManager.spawnEnemy(new THREE.Vector3(15, 3, 10));
+    this.enemyManager.spawnEnemy(new THREE.Vector3(-15, 3, -10));
+    this.enemyManager.spawnEnemy(new THREE.Vector3(0, 3, -20));
+  }
+
   onWindowResize() {
     this.player.onWindowResize();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
-  update() {
+  update(deltaTime) {
     this.player.update();
     const playerPos = this.player.getPosition();
     this.gameScene.update(playerPos);
-    this.spellManager.update();
+    this.spellManager.update(deltaTime);
+    this.enemyManager.update(deltaTime);
 
     if (this.player.isMoving && this.player.canJump) {
       this.audioManager.playWalkSound();
@@ -166,7 +180,11 @@ export class Game {
   animate = () => {
     this.animationFrameId = requestAnimationFrame(this.animate);
     if (!this.isPaused) {
-      this.update();
+      const currentTime = performance.now();
+      const deltaTime = Math.min((currentTime - this.lastFrameTime) / 1000, 0.1);
+      this.lastFrameTime = currentTime;
+
+      this.update(deltaTime);
       this.render();
       this.fpsCounter.update();
     }
@@ -174,6 +192,7 @@ export class Game {
 
   dispose() {
     this.gameScene.dispose();
+    this.enemyManager.dispose();
     this.renderer.dispose();
     this.fpsCounter.dispose();
     this.speechRecognitionManager.stop();

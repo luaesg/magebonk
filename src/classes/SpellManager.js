@@ -3,10 +3,11 @@ import { Projectile } from './Projectile.js';
 import { ParticleSystem } from './ParticleSystem.js';
 
 export class SpellManager {
-  constructor(gameScene, player, audioManager) {
+  constructor(gameScene, player, audioManager, enemyManager = null) {
     this.gameScene = gameScene;
     this.player = player;
     this.audioManager = audioManager;
+    this.enemyManager = enemyManager;
     this.scene = gameScene.getScene();
     this.projectiles = [];
     this.particleSystem = new ParticleSystem(this.scene);
@@ -20,6 +21,10 @@ export class SpellManager {
         fireball: 500,
         ice: 300
     };
+  }
+
+  setEnemyManager(enemyManager) {
+    this.enemyManager = enemyManager;
   }
 
   castSpell(spellName, intensity = 0.5) {
@@ -132,6 +137,16 @@ export class SpellManager {
     const barriers = this.gameScene.getBarriers();
     for (let i = this.projectiles.length - 1; i >= 0; i--) {
         const proj = this.projectiles[i];
+
+        if (this.enemyManager) {
+            const hitEnemy = this.enemyManager.checkProjectileHit(proj);
+            if (hitEnemy) {
+                proj.onCollision(proj.mesh.position, proj.type);
+                proj.dispose();
+                this.projectiles.splice(i, 1);
+                continue;
+            }
+        }
 
         if (proj.type === 'fireball') {
             const rastroPos = proj.mesh.position.clone();

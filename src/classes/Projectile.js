@@ -11,15 +11,18 @@ export class Projectile {
 
     intensity = Math.max(0.3, Math.min(2.0, intensity));
 
+    this.damage = type === 'fireball' ? 25 : 20;
+    this.knockbackForce = type === 'fireball' ? 2.0 : 1.0;
+
     const geometry = new THREE.SphereGeometry(0.3, 8, 8);
     let material;
 
     switch (type) {
       case 'fireball':
         const baseRadius = 8.4;
-        const radius = baseRadius * intensity;
+        this.radius = baseRadius * intensity;
 
-        this.mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 16, 16),
+        this.mesh = new THREE.Mesh(new THREE.SphereGeometry(this.radius, 16, 16),
           new THREE.MeshStandardMaterial({
             color: 0xff4500,
             emissive: 0xff2200,
@@ -32,13 +35,14 @@ export class Projectile {
         this.speed = 0.8;
 
         const core = new THREE.Mesh(
-          new THREE.SphereGeometry(radius * 0.5, 16, 16),
+          new THREE.SphereGeometry(this.radius * 0.5, 16, 16),
           new THREE.MeshBasicMaterial({ color: 0xffff00 })
         );
         this.mesh.add(core);
         break;
 
       case 'ice':
+        this.radius = 0.3;
         material = new THREE.MeshStandardMaterial({
           color: 0x00ffff,
           emissive: 0x0000ff,
