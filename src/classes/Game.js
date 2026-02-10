@@ -13,6 +13,8 @@ export class Game {
     this.inputManager = new InputManager();
     this.gameScene = new GameScene();
     this.player = new Player(this.inputManager);
+    this.player.onPlayerDeath = () => this.handleGameOver();
+    this.isGameOver = false;
     this.audioManager = new AudioManager(this.player.getCamera());
     this.fpsCounter = new FPSCounter();
     this.speechRecognitionManager = new SpeechRecognitionManager();
@@ -23,6 +25,11 @@ export class Game {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowShadowMap;
+
+    const btnRestart = document.getElementById('btn-restart');
+    if (btnRestart) {
+        btnRestart.addEventListener('click', () => this.resetGame());
+    }
 
     this.isPaused = false;
     this.animationFrameId = null;
@@ -159,6 +166,8 @@ export class Game {
   }
 
   update(deltaTime) {
+    if (this.isPaused || this.isGameOver) return;
+    
     this.player.update();
     const playerPos = this.player.getPosition();
     this.gameScene.update(playerPos);
@@ -197,4 +206,38 @@ export class Game {
     this.fpsCounter.dispose();
     this.speechRecognitionManager.stop();
   }
+
+  handleGameOver() {
+    if (this.isGameOver) return;
+    this.isGameOver = true;
+
+    console.log("Game Over iniciado.");
+
+    this.inputManager.unlockPointer();
+
+    const screen = document.getElementById('game-over-screen');
+    if (screen) screen.style.display = 'flex';
+
+    document.getElementById('hud').style.display = 'none';
+    document.getElementById('crosshair').style.display = 'none';
+  }
+
+  resetGame() {
+    this.isGameOver = false;
+
+    document.getElementById('game-over-screen').style.display = 'none';
+    document.getElementById('hud').style.display = 'block';
+    document.getElementById('crosshair').style.display = 'block';
+
+    this.player.reset();
+
+    if (this.enemyManager) {
+        this.enemyManager.clearAllEnemies(); 
+        this.enemyManager.spawnTimer = 0; 
+    }
+
+    this.inputManager.lockPointer();
+    
+    this.lastFrameTime = performance.now();
+}
 }

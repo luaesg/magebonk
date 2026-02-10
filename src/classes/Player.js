@@ -41,6 +41,8 @@ export class Player {
     this.inputManager.onMouseMove = (deltaX, deltaY) =>
       this.handleMouseMove(deltaX, deltaY);
     this.inputManager.onJump = () => this.jump();
+
+    this.onPlayerDeath = null;
   }
 
   update() {
@@ -192,13 +194,33 @@ updateHealthBar() {
 }
 
 takeDamage(amount) {
-  this.currentHP = Math.max(0, this.currentHP - amount);
-  this.updateHealthBar();
+  if (this.currentHP <= 0) return; 
+
+    this.currentHP = Math.max(0, this.currentHP - amount);
+    this.updateHealthBar();
+
+    if (this.currentHP <= 0) {
+        
+        if (this.onPlayerDeath) {
+            this.onPlayerDeath(); 
+        }
+    }
 }
 
 heal(amount) {
   this.currentHP = Math.min(this.maxHP, this.currentHP + amount);
   this.updateHealthBar();
+}
+
+reset() {
+    this.currentHP = this.maxHP;
+    this.updateHealthBar();
+    this.velocity.set(0, 0, 0);
+   
+    this.camera.position.set(0, this.config.height + 5, 20);
+    this.camera.rotation.set(0, 0, 0);
+    this.yaw = 0;
+    this.pitch = 0;
 }
 
 

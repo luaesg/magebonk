@@ -36,6 +36,17 @@
       <p>🖱️ Clique Esq/Dir - Magias</p>
       <p><span style="color: white;">ESC</span> ou <span style="color: white;">P</span> - Menu de Pausa</p>
     </div>
+
+    <!-- Tela de morte -->
+        <div id="game-over-screen" style="display: none;">
+    <div class="game-over-content">
+        <h1 style="color: #ff0000; font-size: 4rem; text-shadow: 0 0 20px #ff0000;">VOCÊ MORREU</h1>
+        <p>A arena consumiu sua alma</p>
+        <button id="btn-restart" class="button save">Tentar Novamente</button>
+        <button class="button reset" onclick="window.location.href = '../index.html'">Sair para Menu</button>
+    </div>
+  </div>
+
 <!--MENU OVERLAY-->
       <div id="settings-container" style="display: none;">
       <!-- Settings wrap -->
