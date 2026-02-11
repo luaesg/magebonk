@@ -16,14 +16,15 @@ export class FPSCounter {
     this.element.style.cssText = `
       position: fixed;
       top: 10px;
-      right: 10px;
+      left: 50%;                /* Centraliza horizontalmente */
+      transform: translateX(-50%); /* Garante o centro exato */
       background: rgba(0, 0, 0, 0.7);
       color: #00ff00;
-      padding: 10px 15px;
+      padding: 5px 10px;
       font-family: monospace;
       font-size: 14px;
       border-radius: 5px;
-      z-index: 999;
+      z-index: 2000;
       border: 1px solid #00ff00;
       user-select: none;
       pointer-events: none;
@@ -44,7 +45,6 @@ export class FPSCounter {
 
       if (this.element) {
         this.element.textContent = `FPS: ${this.fps}`;
-
         if (this.fps >= 60) {
           this.element.style.color = '#00ff00'; 
         } else if (this.fps >= 30) {

@@ -21,12 +21,34 @@
 
     <div id="hud">
       <h2>MageBonk</h2>
-      <p id="pointer-status" style="color: #ff4444; font-size: 0.9rem;">🖱️ Clique para travar o mouse</p>
     </div>
 
-    <button id="menu-button" onclick="window.location.href = '../index.html'">
-      ← Voltar ao Menu
-    </button>
+    <div style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 100;
+        gap: 5px;
+    ">
+        <button id="menu-button" onclick="window.location.href = '../index.html'" style="position: static;">
+          ← Voltar ao Menu
+        </button>
+        
+        <p id="pointer-status" style="
+            color: #ff4444; 
+            font-size: 0.9rem; 
+            font-family: 'Crimson Text', serif;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            text-align: center;
+            margin: 0;
+        ">
+            🖱️ Clique para travar o mouse
+        </p>
+    </div>
 
     <div id="crosshair"></div>
 
