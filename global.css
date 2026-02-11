@@ -413,18 +413,120 @@ body::before {
     top: 9%;
     left: 7%;
     transform: translateX(-50%);
-
     width: 200px;
     height: 20px;
-
     background: rgba(0, 0, 0, 0.6);
     border: 2px solid #222;
     border-radius: 10px;
-
     overflow: hidden;
-
     z-index: 100;
+}
 
+#horde-info-container {
+    position: fixed;
+    top: 14%;
+    left: 7%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 100;
+    width: 200px;
+}
+
+#horde-level-display {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: #C5A45A;
+    text-shadow: 2px 2px 4px black;
+    margin: 0;
+}
+
+#rest-timer-display {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.1rem;
+    color: #E7E5D9;
+    text-shadow: 1px 1px 2px black;
+    margin-top: 5px;
+}
+
+/* Barra Vertical da Horda */
+#horde-progress-container {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 300px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #4B2E17;
+    border-radius: 10px;
+    overflow: visible; 
+    z-index: 90;
+}
+
+#horde-progress-fill {
+    width: 100%;
+    height: 100%; /* Começa cheio */
+    background: linear-gradient(to top, #4B0082, #8A2BE2); /* Roxo mágico */
+    transition: height 0.5s ease-out, background 0.5s ease;
+    border-bottom: 2px solid #E7E5D9;
+    border-radius: 8px; /* Pequeno arredondamento interno */
+}
+
+/* Label Vertical ao lado da barra */
+#horde-label {
+    position: absolute;
+    right: 25px; /* Posiciona à esquerda da barra (que tem 15px de largura) */
+    top: 50%;
+    transform: translateY(-50%);
+    
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #C5A45A; /* Dourado padrão */
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 2px 2px 4px black;
+    pointer-events: none;
+}
+
+/* Overlay Central (Mensagens) */
+#center-overlay {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cinzel', serif;
+    text-align: center;
+    z-index: 500;
+    pointer-events: none;
+    text-shadow: 0 0 30px black;
+}
+
+.overlay-msg {
+    font-size: 4rem;
+    color: #C5A45A;
+    animation: fadeInOut 3s forwards;
+}
+
+.overlay-countdown {
+    font-size: 6rem;
+    color: #ff4444;
+    font-weight: 900;
+    animation: popIn 0.8s infinite;
+}
+
+/* Animações */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: scale(0.8); }
+    20% { opacity: 1; transform: scale(1.1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2); }
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0; }
 }
 
 /* Barra de vida interna */
@@ -997,6 +1099,19 @@ select option {
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+
+  .button.exit {
+  color: #ffaaaa;
+  background: linear-gradient(135deg, #582f2f 0%, #3d1e1e 100%);
+  border-color: #8b4513;
+  margin-top: 10px;
+}
+
+.button.exit:hover {
+  background: linear-gradient(135deg, #7c3f3f 0%, #5d2e2e 100%);
+  box-shadow: 0 0 20px rgba(200, 100, 100, 0.3);
+  color: #ff4444;
+}
 }
 
 /* ===========================

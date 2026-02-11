@@ -14,6 +14,18 @@
       <div id="barra-de-vida"></div>
     </div>
 
+    <div id="horde-info-container">
+        <h3 id="horde-level-display">HORDA 1</h3>
+        <p id="rest-timer-display" style="display: none;">Descanso: 6s</p>
+    </div>
+
+    <div id="horde-progress-container">
+        <div id="horde-label">H<br>O<br>R<br>D<br>A</div>
+        <div id="horde-progress-fill"></div>
+    </div>
+
+    <div id="center-overlay"></div>
+
     <div id="pergaminho-magico">
       <img src="/img/pergaminho-magico.png" alt="Pergaminho mágico">
       <span id="spell-name"></span>
@@ -23,29 +35,8 @@
       <h2>MageBonk</h2>
     </div>
 
-    <div style="
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 100;
-        gap: 5px;
-    ">
-        <button id="menu-button" onclick="window.location.href = '../index.html'" style="position: static;">
-          ← Voltar ao Menu
-        </button>
-        
-        <p id="pointer-status" style="
-            color: #ff4444; 
-            font-size: 0.9rem; 
-            font-family: 'Crimson Text', serif;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px black;
-            text-align: center;
-            margin: 0;
-        ">
+    <div style="position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; align-items: center; z-index: 100; gap: 5px;">
+        <p id="pointer-status" style="color: #ff4444; font-size: 0.9rem; font-family: 'Crimson Text', serif; font-weight: bold; text-shadow: 1px 1px 2px black; text-align: center; margin: 0; background-color: rgba(0,0,0,0.3); padding: 2px 5px; border-radius: 4px;">
             🖱️ Clique para travar o mouse
         </p>
     </div>
@@ -56,117 +47,85 @@
       <p>⌨️ WASD ou Setas - Mover</p>
       <p>🖱️ Mouse - Olhar</p>
       <p>🖱️ Clique Esq/Dir - Magias</p>
-      <p><span style="color: white;">ESC</span> ou <span style="color: white;">P</span> - Menu de Pausa</p>
+      <p><span style="color: white;">ESC</span> - Menu de Pausa</p>
     </div>
 
-    <!-- Tela de morte -->
-        <div id="game-over-screen" style="display: none;">
-    <div class="game-over-content">
-        <h1 style="color: #ff0000; font-size: 4rem; text-shadow: 0 0 20px #ff0000;">VOCÊ MORREU</h1>
-        <p>A arena consumiu sua alma</p>
-        <button id="btn-restart" class="button save">Tentar Novamente</button>
-        <button class="button reset" onclick="window.location.href = '../index.html'">Sair para Menu</button>
-    </div>
-  </div>
-
-<!--MENU OVERLAY-->
-      <div id="settings-container" style="display: none;">
-      <!-- Settings wrap -->
-      <div class="settings-content">
-      <a href="../index.html" class="back-button">← Voltar ao Menu</a>
-
-      <div class="page-header">
-        <h1>Configurações</h1>
-        <p>Personalize sua experiência</p>
-      </div>
-
-      <div class="settings-section">
-        <h2>⚙ Áudio</h2>
-        <div class="setting-item">
-          <span class="setting-label">Volume Geral</span>
-          <div class="setting-control">
-            <input type="range" id="volumeGeral" min="0" max="100" value="70">
-            <span class="value-display" id="volumeGeralValue">70%</span>
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Música</span>
-          <div class="setting-control">
-            <input type="range" id="volumeMusica" min="0" max="100" value="60">
-            <span class="value-display" id="volumeMusicaValue">60%</span>
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Efeitos Sonoros</span>
-          <div class="setting-control">
-            <input type="range" id="volumeEfeitos" min="0" max="100" value="80">
-            <span class="value-display" id="volumeEfeitosValue">80%</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-section">
-        <h2>🎮 Gameplay</h2>
-        <div class="setting-item">
-          <span class="setting-label">Sensibilidade do Mouse</span>
-          <div class="setting-control">
-            <input type="range" id="mouseSensitivity" min="1" max="10" value="5">
-            <span class="value-display" id="mouseSensitivityValue">5</span>
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Inverter Eixo Y</span>
-          <div class="setting-control">
-            <input type="checkbox" id="invertY">
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Dificuldade</span>
-          <div class="setting-control">
-            <select id="difficulty">
-              <option value="facil">Fácil</option>
-              <option value="normal" selected>Normal</option>
-              <option value="dificil">Difícil</option>
-              <option value="lendario">Lendário</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="settings-section">
-        <h2>🎨 Gráficos</h2>
-        <div class="setting-item">
-          <span class="setting-label">Qualidade</span>
-          <div class="setting-control">
-            <select id="qualidade">
-              <option value="baixa">Baixa</option>
-              <option value="media" selected>Média</option>
-              <option value="alta">Alta</option>
-              <option value="ultra">Ultra</option>
-            </select>
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Sombras</span>
-          <div class="setting-control">
-            <input type="checkbox" id="shadows" checked>
-          </div>
-        </div>
-        <div class="setting-item">
-          <span class="setting-label">Bloom Effect</span>
-          <div class="setting-control">
-            <input type="checkbox" id="bloom" checked>
-          </div>
-        </div>
-      </div>
-
-      <div class="button-group">
-        <button class="button save" onclick="saveSettings()">💾 Salvar</button>
-        <button class="button reset" onclick="resetSettings()">⟲ Restaurar Padrões</button>
+    <div id="game-over-screen" style="display: none;">
+      <div class="game-over-content">
+          <h1 style="color: #ff0000; font-size: 4rem; text-shadow: 0 0 20px #ff0000;">VOCÊ MORREU</h1>
+          <p>A arena consumiu sua alma.</p>
+          <button id="btn-restart" class="button save">☠ Tentar Novamente</button>
+          <button class="button exit" onclick="window.location.href = '../index.html'">Sair para Menu</button>
       </div>
     </div>
-</div>
+
+    <div id="settings-container" style="display: none;">
+      <div class="settings-content" onmousedown="event.stopPropagation()" onclick="event.stopPropagation()">
+        
+        <div class="page-header">
+          <h1>Pausa</h1>
+          <p>Configurações de Jogo</p>
+        </div>
+
+        <div class="settings-section">
+          <h2>⚙ Áudio</h2>
+          <div class="setting-item">
+            <span class="setting-label">Volume Geral</span>
+            <div class="setting-control"><input type="range" id="volumeGeral" min="0" max="100" value="70"><span class="value-display" id="volumeGeralValue">70%</span></div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Música</span>
+            <div class="setting-control"><input type="range" id="volumeMusica" min="0" max="100" value="60"><span class="value-display" id="volumeMusicaValue">60%</span></div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Efeitos Sonoros</span>
+            <div class="setting-control"><input type="range" id="volumeEfeitos" min="0" max="100" value="80"><span class="value-display" id="volumeEfeitosValue">80%</span></div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2>🎮 Gameplay</h2>
+          <div class="setting-item">
+            <span class="setting-label">Sensibilidade</span>
+            <div class="setting-control"><input type="range" id="mouseSensitivity" min="1" max="10" value="5"><span class="value-display" id="mouseSensitivityValue">5</span></div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Inverter Eixo Y</span>
+            <div class="setting-control"><input type="checkbox" id="invertY"></div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h2>🎨 Gráficos</h2>
+          <div class="setting-item">
+            <span class="setting-label">Qualidade</span>
+            <div class="setting-control">
+              <select id="qualidade">
+                <option value="baixa">Baixa</option>
+                <option value="media" selected>Média</option>
+                <option value="alta">Alta</option>
+                <option value="ultra">Ultra</option>
+              </select>
+            </div>
+          </div>
+          <div class="setting-item">
+            <span class="setting-label">Bloom Effect</span>
+            <div class="setting-control"><input type="checkbox" id="bloom" checked></div>
+          </div>
+        </div>
+
+        <div class="button-group" style="flex-wrap: wrap;">
+          <button class="button save" onclick="saveSettings()">💾 Salvar</button>
+          <button class="button reset" onclick="resetSettings()">⟲ Restaurar</button>
+          <button class="button" style="border-color: #44ff44; color: #44ff44;" onclick="document.body.requestPointerLock()">▶ Voltar ao Jogo</button>
+          
+          <button class="button exit" onclick="window.location.href = '../index.html'">✕ Sair para o Menu</button>
+        </div>
+
+      </div>
+    </div>
+    
     <script type="module" src="../src/game.js"></script>
-<!-- SETTINGS SCRIPT --> 
     <script type="module" src="../src/settings.js"></script>
   </body>
 </html>
