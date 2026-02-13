@@ -45,17 +45,23 @@ export class GameScene {
     ground.receiveShadow = true;
     this.scene.add(ground);
 
+    // Instanciação correta do Gerador de Grama
+    // Parâmetros ajustados para grama rasteira e fina
     this.grassGenerator = new GrassGenerator({
       planeSize: this.mapSize,
       bladeCount: 500000,
-      bladeWidth: 0.2,
-      bladeHeight: 0.2,
-      bladeHeightVariation: 0.5,
+      bladeWidth: 0.04,        // Largura fina
+      bladeHeight: 0.12,       // Altura baixa
+      bladeHeightVariation: 0.05, 
     });
+
     const grassMesh = this.grassGenerator.generate();
     this.scene.add(grassMesh);
   }
 
+  /**
+   * Cria as barreiras físicas ao redor do mapa.
+   */
   setupBarriers() {
     const size = this.mapSize / 2;
     const barrierHeight = 10;
@@ -67,8 +73,6 @@ export class GameScene {
     this.createBarrier(-size, 0, barrierThickness, this.mapSize, barrierHeight);
   }
 
-  
-
   createBarrier(x, z, width, depth, height) {
     if (height === undefined) {
       height = depth;
@@ -77,7 +81,7 @@ export class GameScene {
 
     const geometry = new THREE.BoxGeometry(width, height, depth);
     const material = new THREE.MeshStandardMaterial({
-      color: 0x0000, 
+      color: 0x000000, 
       roughness: 0.8,
     });
     const barrier = new THREE.Mesh(geometry, material);

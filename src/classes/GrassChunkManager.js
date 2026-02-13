@@ -1,6 +1,3 @@
-/**
- * GrassChunkManager: Trava o PC, não usar, tem que otimizar antes
- */
 import * as THREE from 'three';
 import { GrassGenerator } from './GrassGenerator.js';
 
@@ -73,8 +70,8 @@ export class GrassChunkManager {
       planeSize: chunkSize,
       bladeCount: bladeCount,
       bladeWidth: 0.08,
-      bladeHeight: 0.3,
-      bladeHeightVariation: 0.15,
+      bladeHeight: 0.20,
+      bladeHeightVariation: 0.10,
     });
 
     const mesh = generator.generate();
